@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mtcna/screen/register.dart';
 
 class Home extends StatefulWidget {
@@ -18,12 +19,12 @@ class _HomeState extends State<Home> {
   Widget showAppName() {
     return Text(
       'MTCNA LEARNING',
-      style: TextStyle(
-        fontSize: 30.0,
-        color: Colors.green.shade700,
-        fontWeight: FontWeight.bold,
-        // fontStyle: FontStyle.italic,
-        fontFamily: 'IndieFlower',
+      style: GoogleFonts.dancingScript(
+        textStyle: TextStyle(
+          fontSize: 30.0,
+          color: Colors.green.shade700,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -45,9 +46,10 @@ class _HomeState extends State<Home> {
       onPressed: () {
         print('You Click Signup');
 
-        MaterialPageRoute materialPageRoute = MaterialPageRoute(builder: (BuildContext contex) => Register());
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext contex) => Register());
         Navigator.of(context).push(materialPageRoute);
-      }, 
+      },
     );
   }
 

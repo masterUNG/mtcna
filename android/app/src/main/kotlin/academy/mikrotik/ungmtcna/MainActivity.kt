@@ -1,4 +1,4 @@
-package academy.mikrotik.mtcna
+package academy.mikrotik.ungmtcna
 
 import io.flutter.embedding.android.FlutterActivity
 

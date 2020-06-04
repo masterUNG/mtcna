@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "389835863868",
+    "firebase_url": "https://ungmtcna.firebaseio.com",
+    "project_id": "ungmtcna",
+    "storage_bucket": "ungmtcna.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389835863868:android:b8791f695ff482f0fe5039",
+        "android_client_info": {
+          "package_name": "academy.mikrotik.ungmtcna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389835863868-21843d24t6k56r9esnl29f5evr0cprev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOEleZG0Br7beS2KXf8quNyGRlSrnauuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389835863868-21843d24t6k56r9esnl29f5evr0cprev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
