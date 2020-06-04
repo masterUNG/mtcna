@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mtcna/screen/list_video.dart';
 import 'package:mtcna/utility/normal_dialog.dart';
 
 class Register extends StatefulWidget {
@@ -23,13 +25,34 @@ class _RegisterState extends State<Register> {
               'name = $nameString, email = $emailString, password = $passwordString validate = $validateString');
 
           if (passwordString == validateString) {
-            
+            registerThread();
           } else {
             normalDialog(context, 'Password ไม่เหมือกัน กรุณาพิมพ์ ใหม่ คะ');
           }
         }
       },
     );
+  }
+
+  Future<Null> registerThread() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth
+        .createUserWithEmailAndPassword(
+            email: emailString, password: passwordString)
+        .then((value) {
+          FirebaseUser firebaseUser = value.user;
+          UserUpdateInfo info = UserUpdateInfo();
+          info.displayName = nameString;
+          firebaseUser.updateProfile(info);
+
+          MaterialPageRoute route = MaterialPageRoute(builder: (context) => ListVideo(),);
+          Navigator.pushAndRemoveUntil(context, route, (route) => false);
+
+        })
+        .catchError((value) {
+          String string = value.message;
+          normalDialog(context, string);
+        });
   }
 
   Widget nameText() {

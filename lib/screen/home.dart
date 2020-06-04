@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mtcna/screen/list_video.dart';
 import 'package:mtcna/screen/register.dart';
 
 class Home extends StatefulWidget {
@@ -8,6 +10,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool status = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkStatus();
+  }
+
+  Future<Null> checkStatus() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseUser firebaseUser = await auth.currentUser();
+    if (firebaseUser != null) {
+      MaterialPageRoute route = MaterialPageRoute(
+        builder: (context) => ListVideo(),
+      );
+      Navigator.of(context).pushAndRemoveUntil(route, (route) => false);
+    } else {
+      setState(() {
+        status = false;
+      });
+    }
+  }
+
   Widget showLogo() {
     return Container(
       width: 180.0,
@@ -70,24 +95,38 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: RadialGradient(
-                  colors: [Colors.white, Colors.green.shade700], radius: 1.0)),
-          child: Center(
-              child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              showLogo(),
-              showAppName(),
-              SizedBox(
-                height: 8.0,
-              ),
-              showButton(),
-            ],
-          )),
-        ),
+        child: status
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : showContent(),
       ),
     );
   }
+
+  Container showContent() {
+    return Container(
+      decoration: BoxDecoration(
+          gradient: RadialGradient(
+              colors: [Colors.white, Colors.green.shade700], radius: 1.0)),
+      child: Center(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          showLogo(),
+          showAppName(),
+          SizedBox(
+            height: 8.0,
+          ),
+          emailForm(),
+          showButton(),
+        ],
+      )),
+    );
+  }
+
+  Widget emailForm() => Container(
+        width: 250.0,
+        child: TextField(),
+      );
 }
