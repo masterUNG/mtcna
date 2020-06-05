@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mtcna/screen/my_service.dart';
@@ -39,20 +40,28 @@ class _RegisterState extends State<Register> {
     await auth
         .createUserWithEmailAndPassword(
             email: emailString, password: passwordString)
-        .then((value) {
-          FirebaseUser firebaseUser = value.user;
-          UserUpdateInfo info = UserUpdateInfo();
-          info.displayName = nameString;
-          firebaseUser.updateProfile(info);
+        .then((value) async {
+      FirebaseUser firebaseUser = value.user;
+      UserUpdateInfo info = UserUpdateInfo();
+      info.displayName = nameString;
+      firebaseUser.updateProfile(info);
 
-          MaterialPageRoute route = MaterialPageRoute(builder: (context) => ListVideo(),);
-          Navigator.pushAndRemoveUntil(context, route, (route) => false);
+      Map<String, dynamic> map = Map();
+      map['Type'] = 'Free';
+      map['Name'] = nameString;
 
-        })
-        .catchError((value) {
-          String string = value.message;
-          normalDialog(context, string);
-        });
+      Firestore firestore = Firestore.instance;
+      CollectionReference reference = firestore.collection('User');
+      await reference.document(firebaseUser.uid).setData(map).then((value) {
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (context) => ListVideo(),
+        );
+        Navigator.pushAndRemoveUntil(context, route, (route) => false);
+      });
+    }).catchError((value) {
+      String string = value.message;
+      normalDialog(context, string);
+    });
   }
 
   Widget nameText() {

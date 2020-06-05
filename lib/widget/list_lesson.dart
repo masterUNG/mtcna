@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mtcna/utility/my_style.dart';
 
 class ListLesson extends StatefulWidget {
   @override
@@ -8,23 +10,55 @@ class ListLesson extends StatefulWidget {
 
 class _ListLessonState extends State<ListLesson> {
   List<String> nameLessons = List();
+  List<String> types = List();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    readLessonData();
+    findUser();
   }
 
-  Future<Null> readLessonData() async {
+  Future<Null> findUser() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.currentUser().then((value) async {
+      String uid = value.uid;
+
+      Firestore firestore = Firestore.instance;
+      await firestore
+          .collection('User')
+          .document(uid)
+          .snapshots()
+          .listen((event) {
+        String status = event.data['Type'];
+        readLessonData(status);
+      });
+    });
+  }
+
+  Future<Null> readLessonData(String status) async {
+    if (nameLessons.length != 0) {
+      nameLessons.clear();
+      types.clear();
+    }
+
     Firestore firestore = Firestore.instance;
     CollectionReference collectionReference = firestore.collection('Lesson');
     await collectionReference.snapshots().listen((event) {
       for (var snapshot in event.documents) {
-        print('NameLesson = ${snapshot.data['NameLesson']}');
-        setState(() {
-          nameLessons.add(snapshot.data['NameLesson']);
-        });
+        if (status == 'Free') {
+          if (snapshot.data['Type'] == 'Free') {
+            setState(() {
+              nameLessons.add(snapshot.data['NameLesson']);
+              types.add(snapshot.data['Type']);
+            });
+          }
+        } else {
+          setState(() {
+            nameLessons.add(snapshot.data['NameLesson']);
+            types.add(snapshot.data['Type']);
+          });
+        }
       }
     });
   }
@@ -39,8 +73,14 @@ class _ListLessonState extends State<ListLesson> {
         itemBuilder: (context, index) => Container(
           margin: EdgeInsets.only(left: 16.0, right: 16.0, top: 10.0),
           child: Card(
-            child: Container(padding: EdgeInsets.all(8.0),
-              child: Text(nameLessons[index]),
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(nameLessons[index]),
+                  Text(types[index], style: TextStyle(color: MyStyle().darkColor),),
+                ],
+              ),
             ),
           ),
         ),

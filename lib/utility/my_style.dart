@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MyStyle {
 
   Color mainColor = Colors.green.shade700;
-  Color darkColor = Colors.brown.shade900;
+  Color darkColor = Colors.blue.shade900;
 
 
   Widget mySizeBox(){
