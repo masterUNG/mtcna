@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mtcna/screen/list_video.dart';
+import 'package:mtcna/screen/my_service.dart';
 import 'package:mtcna/utility/normal_dialog.dart';
 
 class Register extends StatefulWidget {
