@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mtcna/screen/list_video.dart';
+import 'package:mtcna/screen/show_list_quiz.dart';
 import 'package:mtcna/utility/my_style.dart';
+
+import 'my_service.dart';
 
 class Chapter extends StatefulWidget {
   final String nameChapter;
@@ -75,6 +79,16 @@ class _ChapterState extends State<Chapter> {
 
   GestureDetector videoCard() {
     return GestureDetector(
+      onTap: () {
+        print('Click Document ==>>> $nameDocument');
+
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (context) => ShowListVideo(
+            nameDocument: nameDocument,
+          ),
+        );
+        Navigator.push(context, route);
+      },
       child: Card(
         child: Container(
           padding: EdgeInsets.all(8.0),
@@ -96,6 +110,12 @@ class _ChapterState extends State<Chapter> {
 
   GestureDetector quizCard() {
     return GestureDetector(
+      onTap: () {
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (context) => ShowListQuiz(nameDocument: nameDocument,),
+        );
+        Navigator.push(context, route);
+      },
       child: Card(
         child: Container(
           padding: EdgeInsets.all(8.0),
